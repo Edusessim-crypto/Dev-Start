@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dev Start — Sites profissionais que vendem</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -100,7 +101,7 @@ h1{letter-spacing:-.06em}
 .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
 
 /* ───────────────── layout helpers ───────────────── */
-.container{max-width:1340px;margin:0 auto;padding:0 clamp(20px,4vw,56px);position:relative;z-index:2}
+.container{max-width:1340px;margin:0 auto;padding-left:clamp(28px,5vw,72px);padding-right:clamp(28px,5vw,72px);position:relative;z-index:2}
 section{position:relative;z-index:2}
 
 /* ───────────────── logo ───────────────── */
@@ -118,7 +119,7 @@ section{position:relative;z-index:2}
 /* ───────────────── navbar ───────────────── */
 .nav-wrap{
   position:sticky;top:14px;z-index:50;
-  padding:0 clamp(20px,4vw,40px);
+  padding:0 clamp(28px,5vw,56px);
   margin-top:14px;
 }
 .nav{
@@ -188,7 +189,7 @@ section{position:relative;z-index:2}
 .btn svg{width:16px;height:16px;flex-shrink:0}
 
 /* ───────────────── HERO ───────────────── */
-.hero{padding:clamp(64px,7vw,80px) 0 clamp(72px,8vw,96px)}
+.hero{padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(48px,6vw,72px)}
 .hero-grid{
   display:grid;grid-template-columns:1.15fr .85fr;
   gap:clamp(32px,4vw,72px);
@@ -196,10 +197,14 @@ section{position:relative;z-index:2}
 }
 .hero-eyebrow{margin-bottom:1.4rem}
 .hero h1{
-  font-size:clamp(48px,7.2vw,108px);
-  line-height:.88;
+  font-size:clamp(44px,7.2vw,108px);
+  line-height:.92;
   margin-bottom:1.6rem;
   font-weight:500;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+  word-break:normal;
+  hyphens:auto;
 }
 .hero h1 .italic{
   font-style:italic;
@@ -308,7 +313,7 @@ section{position:relative;z-index:2}
 .delivery-badge .bolt{color:var(--green);font-size:14px}
 
 /* ───────────────── sections common ───────────────── */
-.section{padding:clamp(72px,7vw,96px) 0}
+.section{padding-top:clamp(52px,5vw,72px);padding-bottom:clamp(52px,5vw,72px)}
 .section-tint,.section-tint-2{position:relative}
 .section-tint::before,.section-tint-2::before{
   content:"";position:absolute;
@@ -317,14 +322,12 @@ section{position:relative;z-index:2}
   z-index:-1;pointer-events:none;
 }
 .section-tint::before{
-  background:rgba(255,255,255,.018);
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.022);
 }
 .section-tint-2::before{
-  background:linear-gradient(180deg,transparent 0%,rgba(34,197,94,.04) 50%,transparent 100%);
+  background:linear-gradient(180deg,transparent 0%,rgba(34,197,94,.05) 50%,transparent 100%);
 }
-.section-head{margin-bottom:clamp(32px,4vw,56px);max-width:780px}
+.section-head{margin-bottom:clamp(28px,3vw,48px);max-width:780px}
 .section-head .eyebrow{margin-bottom:1rem}
 .section-head h2{
   font-size:clamp(36px,5vw,68px);
@@ -671,7 +674,7 @@ section{position:relative;z-index:2}
 
 /* ───────────────── CTA FINAL ───────────────── */
 .cta-final{
-  padding:clamp(40px,6vw,80px);
+  padding:clamp(28px,4vw,80px);
   border-radius:2.5rem;
   background:
     radial-gradient(circle at 20% 30%,rgba(74,222,128,.22),transparent 50%),
@@ -690,19 +693,20 @@ section{position:relative;z-index:2}
   -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);
   pointer-events:none;
 }
-.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;position:relative;z-index:2}
-.cta-final h2{font-size:clamp(36px,5vw,62px);letter-spacing:-.05em;line-height:.95;margin-bottom:1.1rem;font-weight:500}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;position:relative;z-index:2;min-width:0}
+.cta-final h2{font-size:clamp(26px,4.5vw,62px);letter-spacing:-.05em;line-height:1;margin-bottom:1.1rem;font-weight:500;overflow-wrap:break-word;word-break:normal}
 .cta-final h2 em{color:var(--green);font-style:normal}
 .cta-final p.lead{color:var(--txt-2);font-size:17px;margin-bottom:2rem;max-width:480px}
 .cta-final .btn-lg{font-size:17px}
 
 .form{
-  padding:2rem;
+  padding:clamp(1.25rem,3vw,2rem);
   background:rgba(0,0,0,.4);
   backdrop-filter:blur(16px);
   border:1px solid var(--line-2);
   border-radius:1.5rem;
   display:flex;flex-direction:column;gap:.9rem;
+  min-width:0;
 }
 .field{display:flex;flex-direction:column;gap:.4rem}
 .field label{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--txt-2)}
@@ -726,7 +730,8 @@ section{position:relative;z-index:2}
 
 /* ───────────────── FOOTER ───────────────── */
 .footer{
-  padding:clamp(60px,8vw,100px) 0 clamp(28px,3vw,40px);
+  padding-top:clamp(48px,5vw,64px);
+  padding-bottom:clamp(20px,2vw,32px);
   position:relative;overflow:hidden;
 }
 .footer::before{
@@ -797,8 +802,8 @@ section{position:relative;z-index:2}
 
 /* ───────────────── responsive ───────────────── */
 @media (max-width:980px){
-  .hero-grid{grid-template-columns:1fr;gap:56px}
-  .hero-visual{height:420px;margin:0 8px}
+  .hero-grid{grid-template-columns:1fr;gap:48px}
+  .hero-visual{height:440px;margin:0 8px}
   .hero-ctas{flex-direction:column;align-items:stretch}
   .hero-ctas .btn{width:100%}
   .problem-cards,.steps,.portfolio-grid,.testimonials{grid-template-columns:1fr}
@@ -815,31 +820,28 @@ section{position:relative;z-index:2}
   .nav-cta span.hide-sm{display:none}
 }
 @media (max-width:600px){
-  .viewport{padding:8px}
-  .shell{border-radius:1.75rem}
-  .container{padding:0 20px}
-  .nav-wrap{padding:0 12px;margin-top:8px}
-  .hero{padding:72px 0 88px}
-  .section{padding:72px 0}
-  .hero-visual{height:380px;margin:32px 0 0}
+  .viewport{padding:10px}
+  .container{padding-left:24px;padding-right:24px}
+  .nav-wrap{padding-left:14px;padding-right:14px}
+  .section{padding-top:52px;padding-bottom:52px}
+  .hero{padding-top:52px;padding-bottom:64px}
+  .section-head{margin-bottom:32px}
   .footer-grid{grid-template-columns:1fr}
+  .footer{padding-top:52px;padding-bottom:28px}
   .price-amt .big{font-size:54px}
-  .hero h1{font-size:46px}
+  .hero h1{font-size:40px}
   .gift-tile{width:200px;height:200px}
   .gift-tile .big-num{font-size:68px}
-  .delivery-badge{left:50%;transform:translateX(-50%);top:auto;bottom:-22px}
-  .problem-card,.step,.testi{padding:1.75rem}
-  .form{padding:1.5rem}
-  .referral{padding:1.75rem;gap:2rem}
-  .cta-final{padding:1.75rem}
-  .portfolio-cta{padding:1.5rem;flex-direction:column;align-items:stretch}
+  .delivery-badge{left:50%;transform:translateX(-50%);top:auto;bottom:-18px}
+  .portfolio-cta{flex-direction:column;align-items:stretch}
   .portfolio-cta .btn{width:100%}
   .wa-float{width:56px;height:56px;bottom:18px;right:18px}
-  .nav-links a{padding:.85rem 1rem;min-height:48px;display:flex;align-items:center}
-  .faq-q{padding:1.25rem 0}
-  .faq-q .ic{width:38px;height:38px}
-  .float-card.tl{top:-12px;left:-8px}
-  .float-card.br{right:-4px;bottom:-14px}
+  .nav-links a{min-height:48px;display:flex;align-items:center}
+  .cta-final{padding:1.4rem;border-radius:1.5rem}
+  .cta-final h2{font-size:28px;line-height:1.05}
+  .cta-final p.lead{font-size:15px}
+  .form{padding:1.25rem}
+  .referral{padding:1.5rem;gap:1.5rem}
 }
 </style>
 </head>
@@ -881,7 +883,7 @@ section{position:relative;z-index:2}
         <div>
           <div class="eyebrow hero-eyebrow reveal">Dev Start / Estúdio digital · Brasil</div>
           <h1 class="reveal d1">
-            Seu negócio merece um&nbsp;<span class="italic">site que vende.</span>
+            Seu negócio merece um <span class="italic">site que vende.</span>
           </h1>
           <p class="lead reveal d2">
             Criamos sites profissionais para pequenas e médias empresas — rápido, bonito e sem complicação. A gente mostra antes de você pagar.
@@ -1014,8 +1016,8 @@ section{position:relative;z-index:2}
           <h3 class="price-name">Site Profissional Completo</h3>
           <p class="price-sub">Do briefing à publicação. Tudo em até 7 dias.</p>
           <div class="price-amt">
-            <span class="big"><span class="c">R$</span>997</span>
-            <span class="or">ou 12× de R$ 97</span>
+            <span class="big"><span style="font-size:.55em">12×</span> <span class="c">R$97</span></span>
+            <span class="or">ou R$ 997 à vista</span>
           </div>
           <ul class="price-list">
             <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span> Design personalizado para o seu negócio</li>
@@ -1236,7 +1238,7 @@ section{position:relative;z-index:2}
             <div class="eyebrow" style="margin-bottom:1rem">08 · Bora começar</div>
             <h2>Pronto pra ter um site que <em>trabalha por você?</em></h2>
             <p class="lead">Fale com a gente agora. A prévia é gratuita e sem compromisso — você só paga se gostar do que vir.</p>
-            <a href="https://wa.me/55SEUNUMERO?text=Oi!%20Quero%20uma%20pr%C3%A9via%20gratuita%20do%20meu%20site." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+            <a href="https://wa.me/5551996823124?text=Oi!%20Quero%20uma%20pr%C3%A9via%20gratuita%20do%20meu%20site." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7 0-.3-.2-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-1.9-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4 0-.1-.2-.2-.5-.4Z"/></svg>
               Falar no WhatsApp agora
             </a>
@@ -1282,7 +1284,7 @@ section{position:relative;z-index:2}
           </a>
           <p>Estúdio digital especializado em sites profissionais para pequenas e médias empresas no Brasil.</p>
           <div class="socials">
-            <a href="https://wa.me/55SEUNUMERO" aria-label="WhatsApp" target="_blank" rel="noopener">
+            <a href="https://wa.me/5551996823124" aria-label="WhatsApp" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7 0-.3-.2-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-1.9-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4 0-.1-.2-.2-.5-.4ZM12 21.5a9.5 9.5 0 0 1-4.9-1.3l-.4-.2-3.6.9.9-3.5-.2-.4a9.4 9.4 0 0 1-1.4-5C2.4 7 6.7 2.7 12 2.7c2.5 0 4.9 1 6.7 2.8a9.4 9.4 0 0 1 2.8 6.7c0 5.2-4.3 9.5-9.5 9.5Z"/></svg>
             </a>
             <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
@@ -1310,7 +1312,7 @@ section{position:relative;z-index:2}
         <div class="footer-col">
           <h4>Fale agora</h4>
           <ul>
-            <li><a href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">WhatsApp →</a></li>
+            <li><a href="https://wa.me/5551996823124" target="_blank" rel="noopener">WhatsApp →</a></li>
             <li><a href="mailto:contato@devstart.com.br">contato@devstart.com.br</a></li>
             <li><a href="#">Brasil · 100% remoto</a></li>
           </ul>
@@ -1325,13 +1327,13 @@ section{position:relative;z-index:2}
 </div>
 
 <!-- floating WA -->
-<a href="https://wa.me/55SEUNUMERO" class="wa-float" target="_blank" rel="noopener" aria-label="Fale no WhatsApp">
+<a href="https://wa.me/5551996823124" class="wa-float" target="_blank" rel="noopener" aria-label="Fale no WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7 0-.3-.2-1.2-.4-2.3-1.4-.8-.7-1.4-1.7-1.6-1.9-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4 0-.1-.2-.2-.5-.4ZM12 21.5a9.5 9.5 0 0 1-4.9-1.3l-.4-.2-3.6.9.9-3.5-.2-.4a9.4 9.4 0 0 1-1.4-5C2.4 7 6.7 2.7 12 2.7c2.5 0 4.9 1 6.7 2.8a9.4 9.4 0 0 1 2.8 6.7c0 5.2-4.3 9.5-9.5 9.5Z"/></svg>
 </a>
 
 <script>
 /* ──────────── config ──────────── */
-const WA_NUMBER = '55SEUNUMERO'; // substituir pelo real
+const WA_NUMBER = '5551996823124'; // substituir pelo real
 const WA_BASE   = `https://wa.me/${WA_NUMBER}`;
 const WA_DEFAULT_MSG = 'Oi! Vim pelo site da Dev Start. Quero saber mais sobre criação de site.';
 
