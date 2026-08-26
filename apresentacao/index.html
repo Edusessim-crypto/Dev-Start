@@ -95,22 +95,34 @@ em{color:var(--green);font-style:italic}
 .slide{
   position:fixed;inset:0;
   display:flex;align-items:center;
-  padding:clamp(72px,9vh,110px) clamp(24px,5vw,72px) clamp(64px,8vh,96px);
-  overflow-y:auto;overflow-x:hidden;      /* slide alto rola em si, nunca o documento */
-  overscroll-behavior:contain;
+  padding:clamp(56px,7vh,84px) clamp(24px,5vw,72px) clamp(52px,6.5vh,76px);
+  overflow:hidden;                        /* scroll 100% bloqueado: o conteúdo cabe por design */
   opacity:0;visibility:hidden;
-  transform:translateY(20px);
-  transition:opacity .5s ease,transform .5s ease,visibility .5s;
+  transform:translateY(var(--enter-from,36px)) scale(.985);
+  transition:
+    opacity .52s cubic-bezier(.22,1,.36,1),
+    transform .52s cubic-bezier(.22,1,.36,1),
+    visibility .52s;
+  will-change:transform,opacity;
 }
 .slide.is-active{
-  opacity:1;visibility:visible;transform:none;
+  opacity:1;visibility:visible;
+  transform:none;
   z-index:3;
 }
+/* o que sai vai para o lado oposto ao que entra: dá direção ao movimento */
 .slide.is-leaving{
-  opacity:0;visibility:visible;transform:translateY(20px);
+  opacity:0;visibility:visible;
+  transform:translateY(var(--leave-to,-36px)) scale(.985);
   z-index:2;pointer-events:none;
 }
-.slide-inner{width:100%;max-width:1340px;margin:0 auto}
+/* avançando: novo sobe de baixo, antigo sai por cima */
+.deck[data-dir="fwd"] .slide{--enter-from:36px}
+.deck[data-dir="fwd"] .slide.is-leaving{--leave-to:-36px}
+/* voltando: inverte */
+.deck[data-dir="back"] .slide{--enter-from:-36px}
+.deck[data-dir="back"] .slide.is-leaving{--leave-to:36px}
+.slide-inner{width:100%;max-width:1340px;margin:0 auto;max-height:100%}
 .slide--alt{background:rgba(255,255,255,.012)}
 
 /* ── entrada: disparada pelo slide ativo, não por observer ── */
@@ -360,7 +372,7 @@ em{color:var(--green);font-style:italic}
 /* ═══════════════ SLIDE 5 — diagnóstico ═══════════════ */
 .diag-head{
   display:flex;align-items:flex-end;justify-content:space-between;
-  gap:2rem;flex-wrap:wrap;margin-bottom:clamp(24px,3vh,36px);
+  gap:2rem;flex-wrap:wrap;margin-bottom:clamp(14px,1.8vh,22px);
 }
 .diag-count{text-align:right;flex-shrink:0}
 .diag-count .n{
@@ -384,13 +396,13 @@ em{color:var(--green);font-style:italic}
 }
 .diag-grid{
   display:grid;grid-template-columns:repeat(2,1fr);
-  gap:clamp(10px,1.2vw,14px);
-  margin-bottom:clamp(20px,2.6vh,28px);
+  gap:clamp(8px,1vw,11px);
+  margin-bottom:clamp(10px,1.4vh,16px);
   position:relative;
 }
 .sym{
-  display:flex;align-items:flex-start;gap:.9rem;
-  padding:1.1rem 1.25rem;
+  display:flex;align-items:flex-start;gap:.85rem;
+  padding:.85rem 1.1rem;
   min-height:74px;                              /* altura uniforme: nada reflui */
   background:rgba(255,255,255,.022);
   border:1px solid var(--line);                 /* borda sempre presente */
@@ -464,10 +476,10 @@ em{color:var(--green);font-style:italic}
 }
 
 /* veredito: camadas empilhadas em altura reservada — só opacidade muda */
-.verdict-wrap{position:relative;min-height:112px}
+.verdict-wrap{position:relative;min-height:92px}
 .verdict{
   position:absolute;inset:0;
-  padding:1.3rem 1.5rem;border-radius:1.25rem;
+  padding:1rem 1.3rem;border-radius:1.1rem;
   background:rgba(34,197,94,.06);
   border:1px solid var(--line-green);
   border-left:3px solid var(--green);
@@ -603,19 +615,19 @@ em{color:var(--green);font-style:italic}
 /* ═══════════════ SLIDE 12 — planos ═══════════════ */
 .plans{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(12px,1.4vw,20px);align-items:start;
-  margin-bottom:clamp(14px,2vh,22px);
+  gap:clamp(10px,1.2vw,16px);align-items:start;
+  margin-bottom:clamp(10px,1.4vh,16px);
 }
 /* as 7 linhas são idênticas nos três cards, então badge, nome,
    descrição, preço, divisor e lista começam na mesma altura */
 .plan{
-  padding:clamp(1.15rem,1.7vw,1.55rem);
+  padding:clamp(.95rem,1.4vw,1.25rem);
   background:var(--card);border:1px solid var(--line);
   border-radius:1.5rem;
   display:grid;
   grid-template-rows:auto auto auto auto auto 1fr auto;
   align-items:start;
-  gap:.7rem;
+  gap:.5rem;
   transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;
 }
 .plan:hover{border-color:var(--line-green);transform:translateY(-4px)}
@@ -628,11 +640,11 @@ em{color:var(--green);font-style:italic}
 }
 .plan--hero:hover{border-color:var(--green);transform:scale(1.04) translateY(-4px)}
 /* linha do badge reservada nos três — vazia no Essencial e no Performance */
-.plan-badge{min-height:26px;display:flex;align-items:center}
+.plan-badge{min-height:22px;display:flex;align-items:center}
 .plan-name{font-size:17.5px;font-weight:600;letter-spacing:-.02em}
-.plan-for{font-size:12.5px;color:var(--txt-2);line-height:1.5;min-height:3em}
+.plan-for{font-size:12.5px;color:var(--txt-2);line-height:1.45;min-height:2.9em}
 .plan-price{
-  padding:.8rem 0;
+  padding:.6rem 0;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   display:flex;flex-direction:column;gap:.4rem;
 }
@@ -650,10 +662,10 @@ em{color:var(--green);font-style:italic}
   font-family:var(--mono);font-size:9.5px;text-transform:uppercase;
   letter-spacing:.14em;color:var(--green);min-height:1.2em;
 }
-.plan-list{display:flex;flex-direction:column;gap:.5rem}
+.plan-list{display:flex;flex-direction:column;gap:.4rem}
 .plan-list li{
-  display:flex;gap:.6rem;align-items:flex-start;
-  font-size:12.8px;color:var(--txt-2);line-height:1.45;
+  display:flex;gap:.55rem;align-items:flex-start;
+  font-size:12.6px;color:var(--txt-2);line-height:1.4;
   text-wrap:balance;
 }
 .plan-list li b{color:var(--txt);font-weight:600}
@@ -667,7 +679,7 @@ em{color:var(--green);font-style:italic}
 .plan-more:hover{color:var(--green)}
 .plan-more svg{width:11px;height:11px}
 .plan-strip{
-  padding:.95rem 1.4rem;border-radius:1.1rem;
+  padding:.6rem 1.3rem;border-radius:1.1rem;
   background:var(--shell);border:1px solid var(--line);
   text-align:center;font-size:13.5px;color:var(--txt-2);line-height:1.55;
 }
@@ -722,13 +734,13 @@ em{color:var(--green);font-style:italic}
 .modal-col .sub{color:var(--txt-3)}
 
 /* ═══════════════ SLIDE 13 — manutenção ═══════════════ */
-.maint-body{max-width:70ch;margin:0 auto clamp(24px,3vh,32px);text-align:center}
-.maint-body p{font-size:clamp(15px,1.6vw,17.5px);color:var(--txt-2);line-height:1.75;margin-bottom:1.1rem}
+.maint-body{max-width:70ch;margin:0 auto clamp(14px,1.8vh,20px);text-align:center}
+.maint-body p{font-size:clamp(14.5px,1.5vw,16.5px);color:var(--txt-2);line-height:1.65;margin-bottom:.75rem}
 .maint-body p:last-child{margin-bottom:0}
 .maint-body b{color:var(--txt);font-weight:600}
 .maint-box{
   max-width:70ch;margin:0 auto;
-  padding:1.5rem 1.75rem;border-radius:1.25rem;
+  padding:1.1rem 1.5rem;border-radius:1.25rem;
   background:var(--glass);border:1px solid var(--line);
   border-left:3px solid var(--green);
 }
@@ -846,21 +858,12 @@ em{color:var(--green);font-style:italic}
 }
 
 /* ═══════════════ movimento reduzido ═══════════════ */
+/* Por decisão do cliente a apresentação mantém o movimento completo mesmo
+   sob "reduzir movimento": é material de venda conduzido ao vivo e o efeito
+   visual foi priorizado. Só a deriva infinita do fundo é desligada, porque
+   é a única animação contínua e sem função narrativa. */
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.001ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.001ms !important;
-  }
-  html{scroll-behavior:auto}
-  .rv{opacity:1 !important;transform:none !important}
-  [data-cascade]>*{opacity:1 !important;transform:none !important}
-  .slide.is-leaving{opacity:0 !important;transform:none !important}
   .bg-layer::before{animation:none !important}
-  .method::before{transform:scaleX(1) !important}
-  .timeline::before{transform:scaleY(1) !important}
-  .method.anim .mstep .dot,.timeline.anim .tl-item::before{opacity:1 !important}
-  .wave{display:none !important}
 }
 
 /* ═══════════════ impressão / PDF ═══════════════ */
@@ -1392,7 +1395,7 @@ em{color:var(--green);font-style:italic}
   <section class="slide slide--alt" id="s12">
     <div class="slide-inner">
       <div class="eyebrow rv">11 · Investimento</div>
-      <h2 class="rv d1" style="font-size:clamp(30px,4.2vw,56px);margin-bottom:clamp(24px,3.5vh,40px)">
+      <h2 class="rv d1" style="font-size:clamp(28px,3.8vw,48px);margin-bottom:clamp(14px,2vh,24px)">
         Escolha <em>o seu plano</em>.
       </h2>
       <div class="plans">
@@ -1661,8 +1664,11 @@ em{color:var(--green);font-style:italic}
 (function(){
   'use strict';
 
-  var REDUCED = window.matchMedia &&
-                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Decisão do cliente: a apresentação roda com movimento completo mesmo
+     quando o sistema pede "reduzir movimento". É material de venda conduzido
+     ao vivo, e o efeito visual foi priorizado sobre a preferência do SO. */
+  var REDUCED = false;
+  var TRANSITION_MS = 520;
 
   var slides   = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var progress = document.getElementById('progress');
@@ -1775,12 +1781,17 @@ em{color:var(--green);font-style:italic}
     if(timeline && slide.contains(timeline)) resetLine(timeline, '.tl-item');
   }
 
+  var deck = document.getElementById('deck');
+
   function show(i, initial){
     i = Math.max(0, Math.min(slides.length - 1, i));
     if(!initial && (i === current || animating)) return;
 
     var outgoing = slides[current];
     var incoming = slides[i];
+
+    /* direção do movimento: define de que lado o slide entra e sai */
+    deck.setAttribute('data-dir', i >= current ? 'fwd' : 'back');
 
     if(!initial && outgoing !== incoming){
       animating = true;
@@ -1790,7 +1801,7 @@ em{color:var(--green);font-style:italic}
       setTimeout(function(){
         outgoing.classList.remove('is-leaving');
         animating = false;
-      }, REDUCED ? 0 : 500);
+      }, TRANSITION_MS);
     }
 
     current = i;
@@ -1841,25 +1852,33 @@ em{color:var(--green);font-style:italic}
     else if(e.key === 'End'){ e.preventDefault(); show(slides.length - 1); }
   });
 
-  /* trackpad e roda não competem com a navegação */
+  /* ══ scroll 100% bloqueado: a roda só troca de slide ══
+     única exceção é o interior do modal, que precisa rolar de verdade */
+  function inModal(target){
+    return !!(target && target.closest && target.closest('.modal-box'));
+  }
+
   var wheelLock = false;
   window.addEventListener('wheel', function(e){
-    var slide = slides[current];
-    /* deixa rolar dentro do slide quando ele é mais alto que a viewport */
-    var inner = e.target.closest ? e.target.closest('.slide, .modal-box') : null;
-    if(inner && inner.classList.contains('modal-box')) return;
-    if(slide && slide.scrollHeight > slide.clientHeight + 4){
-      var atTop = slide.scrollTop <= 0;
-      var atEnd = slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 1;
-      if((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atTop)) return;
-    }
+    if(inModal(e.target)) return;
     e.preventDefault();
-    if(wheelLock) return;
+    if(wheelLock || animating) return;
     if(Math.abs(e.deltaY) < 12) return;
     wheelLock = true;
-    setTimeout(function(){ wheelLock = false; }, 620);
+    setTimeout(function(){ wheelLock = false; }, TRANSITION_MS + 120);
     if(e.deltaY > 0) next(); else prev();
   }, { passive:false });
+
+  /* trackpad horizontal e gestos laterais não movem nada */
+  window.addEventListener('touchmove', function(e){
+    if(inModal(e.target)) return;
+    e.preventDefault();
+  }, { passive:false });
+
+  /* teclas de rolagem residuais e qualquer scroll programático */
+  window.addEventListener('scroll', function(){
+    if(window.scrollY !== 0 || window.scrollX !== 0) window.scrollTo(0, 0);
+  }, { passive:true });
 
   /* swipe vertical no mobile = setas */
   var touchY = null, touchX = null;
@@ -1868,14 +1887,10 @@ em{color:var(--green);font-style:italic}
   }, { passive:true });
   document.addEventListener('touchend', function(e){
     if(touchY === null) return;
+    if(inModal(e.target)){ touchY = null; touchX = null; return; }
     var dy = touchY - e.changedTouches[0].clientY;
     var dx = touchX - e.changedTouches[0].clientX;
-    var slide = slides[current];
-    if(slide && slide.scrollHeight > slide.clientHeight + 4){
-      var atTop = slide.scrollTop <= 0;
-      var atEnd = slide.scrollTop + slide.clientHeight >= slide.scrollHeight - 1;
-      if((dy > 0 && !atEnd) || (dy < 0 && !atTop)){ touchY = null; return; }
-    }
+    /* swipe vertical é o equivalente das setas — não há mais scroll interno */
     if(Math.abs(dy) > 70 && Math.abs(dy) > Math.abs(dx)){
       if(dy > 0) next(); else prev();
     }
