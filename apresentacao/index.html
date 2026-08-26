@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dev Start — Apresentação Comercial</title>
-<meta name="description" content="Uma conversa de 25 minutos sobre o que o seu site está deixando de fazer — e o que ele poderia fazer em 7 dias.">
+<meta name="description" content="Uma conversa de 25 minutos para identificar onde seu site está perdendo oportunidades — e o que pode mudar nos próximos 7 dias.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -519,7 +519,9 @@ em{color:var(--green);font-style:italic}
   transition:opacity .38s ease,visibility .38s;
 }
 .verdict.show{opacity:1;visibility:visible}
-.verdict .w{display:inline-block}
+/* margem própria em vez de depender do espaço em branco entre inline-blocks,
+   que alguns navegadores colapsam quando o span não quebra linha */
+.verdict .w{display:inline-block;margin-right:.28em}
 .verdict.byword .w{
   opacity:0;transform:translateY(5px);
   transition:opacity .24s ease,transform .24s ease;
@@ -1033,13 +1035,13 @@ em{color:var(--green);font-style:italic}
     <div class="slide-inner">
       <div class="eyebrow rv">Dev Start / Apresentação Comercial · Brasil</div>
       <h1 class="rv d1">
-        Seu site deveria<br>
-        <em>trazer clientes</em>.<br>
-        O que ele faz hoje?
+        Se o seu site não gera clientes,<br>
+        qual é exatamente<br>
+        <em>o trabalho dele?</em>
       </h1>
       <p class="lead rv d2">
-        Uma conversa de 25 minutos sobre o que o seu site está deixando de fazer —
-        e o que ele poderia fazer em 7 dias.
+        Uma conversa de 25 minutos para identificar onde seu site está perdendo
+        oportunidades — e o que pode mudar nos próximos 7 dias.
       </p>
       <div class="stats rv d3" data-cascade>
         <div class="stat">
@@ -2110,12 +2112,11 @@ em{color:var(--green);font-style:italic}
     if(byWord && !REDUCED){
       incoming.classList.add('byword');
       var words = text.split(' ');
-      words.forEach(function(w, i){
+      words.forEach(function(w){
         var s = document.createElement('span');
         s.className = 'w';
         s.textContent = w;
         incoming.appendChild(s);
-        if(i < words.length - 1) incoming.appendChild(document.createTextNode(' '));
       });
       incoming.classList.add('show');
       outgoing.classList.remove('show');
