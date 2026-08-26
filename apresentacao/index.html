@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dev Start — Apresentação Comercial</title>
+<meta name="description" content="Uma conversa de 25 minutos sobre o que o seu site está deixando de fazer — e o que ele poderia fazer em 7 dias.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* ═══════════════ reset + base ═══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+button{font-family:inherit;background:none;border:0;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+li{list-style:none}
+img{max-width:100%;display:block}
+
+/* ═══════════════ tokens (espelhados de devstartoficial.com.br) ═══════════════ */
+:root{
+  --bg:#000;
+  --shell:#0c0c0c;
+  --surface:#0a0a0a;
+  --green:#22c55e;
+  --green-hi:#4ade80;
+  --green-glow:rgba(34,197,94,.28);
+  --green-deep:#155230;
+  --txt:#ebebeb;
+  --txt-2:rgba(235,235,235,.6);
+  --txt-3:rgba(235,235,235,.3);
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --line-green:rgba(34,197,94,.30);
+  --glass:rgba(255,255,255,.03);
+  --card:rgba(255,255,255,.025);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --display:'Space Grotesk',system-ui,sans-serif;
+}
+
+body{
+  font-family:var(--display);
+  background:var(--bg);
+  color:var(--txt);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ═══════════════ grid + noise de fundo ═══════════════ */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bg-layer::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right,rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.bg-layer::after{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
+  opacity:.05;mix-blend-mode:overlay;
+}
+.glow{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.glow-1{width:520px;height:520px;background:var(--green-glow);top:-200px;right:-140px}
+.glow-2{width:480px;height:480px;background:rgba(34,197,94,.08);bottom:-160px;left:-180px}
+
+/* ═══════════════ tipografia ═══════════════ */
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.04em;line-height:1;font-weight:600}
+h1{letter-spacing:-.06em}
+em{color:var(--green);font-style:italic}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:.22em;font-size:10px;color:var(--txt-2);
+  margin-bottom:1.6rem;
+}
+.eyebrow::before{
+  content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 12px var(--green);
+  flex-shrink:0;
+}
+.note{
+  font-family:var(--mono);font-size:11px;color:var(--txt-3);
+  letter-spacing:.04em;
+}
+.lead{font-size:clamp(15px,1.5vw,18.5px);color:var(--txt-2);line-height:1.65;max-width:62ch}
+
+/* ═══════════════ estrutura de slides ═══════════════ */
+.deck{position:relative;z-index:2}
+.slide{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:clamp(72px,9vh,110px) clamp(24px,5vw,72px) clamp(64px,8vh,96px);
+  position:relative;
+}
+.slide-inner{width:100%;max-width:1340px;margin:0 auto}
+.slide--alt{background:rgba(255,255,255,.012)}
+
+/* animação de entrada */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
+
+/* ═══════════════ logo ═══════════════ */
+.logo{display:inline-flex;align-items:center;gap:.65rem;font-weight:700;letter-spacing:-.04em}
+.logo-mark{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--green);
+  display:grid;place-items:center;
+  color:#000;font-family:var(--mono);font-weight:700;font-size:13px;
+  box-shadow:0 0 30px rgba(34,197,94,.35), inset 0 0 0 1px rgba(0,0,0,.15);
+  flex-shrink:0;
+}
+.logo-text{font-size:18px}
+.logo-text .g{color:var(--green)}
+
+/* ═══════════════ botões ═══════════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:.95rem 1.5rem;min-height:48px;border-radius:9999px;
+  font-weight:600;font-size:15px;
+  transition:transform .2s ease,box-shadow .2s,background .2s,border-color .2s,color .2s;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--green);color:#000;box-shadow:0 0 30px rgba(34,197,94,.3)}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02);background:var(--green-hi);box-shadow:0 0 50px rgba(74,222,128,.55)}
+.btn-outline{border:1px solid var(--line-2);color:#fff;background:rgba(255,255,255,.02)}
+.btn-outline:hover{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.04)}
+.btn-lg{padding:1.15rem 1.85rem;font-size:16px}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+
+/* ═══════════════ badge ═══════════════ */
+.badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(34,197,94,.12);color:var(--green);
+  padding:.4rem .8rem;border-radius:9999px;
+  font-family:var(--mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.14em;font-weight:500;
+}
+.badge::before{
+  content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px var(--green);
+}
+
+/* ═══════════════ check ═══════════════ */
+.ck{
+  flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:rgba(34,197,94,.15);
+  display:grid;place-items:center;color:var(--green);
+  margin-top:1px;
+}
+.ck svg{width:12px;height:12px}
+
+/* ═══════════════ cards genéricos ═══════════════ */
+.card{
+  padding:1.75rem;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:1.5rem;
+  transition:border-color .3s,transform .3s;
+}
+.card:hover{border-color:var(--line-green);transform:translateY(-4px)}
+.card-ico{
+  width:44px;height:44px;border-radius:13px;
+  background:rgba(34,197,94,.1);
+  border:1px solid rgba(34,197,94,.18);
+  display:grid;place-items:center;color:var(--green);
+  margin-bottom:1.1rem;
+}
+.card-ico svg{width:20px;height:20px;stroke-width:1.6}
+.card h3{font-size:18px;margin-bottom:.55rem;font-weight:600}
+.card p{font-size:14.5px;color:var(--txt-2);line-height:1.6}
+
+/* ═══════════════ HUD: progresso, contador, export ═══════════════ */
+.progress{
+  position:fixed;top:0;left:0;height:2px;width:0;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+  z-index:100;transition:width .15s linear;
+}
+.counter{
+  position:fixed;right:clamp(16px,2.5vw,32px);bottom:clamp(16px,2.5vh,28px);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--txt-3);z-index:90;
+  display:flex;align-items:baseline;gap:.3rem;
+}
+.counter .cur{color:var(--green);font-size:13px;font-weight:500}
+.export{
+  position:fixed;left:clamp(16px,2.5vw,32px);bottom:clamp(16px,2.5vh,28px);
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--txt);
+  opacity:.4;transition:opacity .25s;z-index:90;
+  padding:.5rem .75rem;border-radius:9999px;
+  border:1px solid var(--line);
+  background:rgba(10,10,10,.6);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.export:hover{opacity:1;border-color:var(--line-green)}
+.export svg{width:13px;height:13px}
+.navarrow{
+  position:fixed;right:clamp(16px,2.5vw,32px);
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(10,10,10,.6);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:grid;place-items:center;color:var(--txt-2);
+  z-index:90;opacity:.5;transition:opacity .25s,border-color .25s,color .25s;
+}
+.navarrow:hover{opacity:1;border-color:var(--line-green);color:var(--green)}
+.navarrow svg{width:16px;height:16px}
+.navarrow.up{bottom:calc(clamp(16px,2.5vh,28px) + 76px)}
+.navarrow.down{bottom:calc(clamp(16px,2.5vh,28px) + 30px)}
+@media(max-width:900px){.navarrow{display:none}}
+
+/* ═══════════════ SLIDE 1 — capa ═══════════════ */
+.cover-top{position:absolute;top:clamp(28px,4vh,44px);left:clamp(24px,5vw,72px);z-index:3}
+.cover h1{
+  font-size:clamp(40px,6.6vw,96px);
+  line-height:.95;margin-bottom:1.5rem;font-weight:500;
+  text-wrap:balance;
+}
+.cover .lead{margin-bottom:clamp(32px,5vh,56px);font-size:clamp(15px,1.6vw,19px)}
+.stats{
+  display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,72px);
+  padding-top:clamp(24px,3vh,36px);
+  border-top:1px solid var(--line);
+}
+.stat .num{
+  font-size:clamp(30px,3.6vw,46px);font-weight:600;
+  letter-spacing:-.04em;line-height:1;color:var(--green);
+}
+.stat .lbl{
+  font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:.18em;color:var(--txt-2);margin-top:.5rem;
+}
+.cover-foot{
+  position:absolute;bottom:clamp(28px,4vh,44px);left:clamp(24px,5vw,72px);
+}
+
+/* ═══════════════ SLIDE 2 — números ═══════════════ */
+.numgrid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(16px,2vw,24px);
+}
+.numcard{
+  padding:clamp(1.75rem,3vw,2.75rem);
+  background:var(--card);border:1px solid var(--line);
+  border-radius:1.75rem;
+  transition:border-color .3s,transform .3s;
+}
+.numcard:hover{border-color:var(--line-green);transform:translateY(-4px)}
+.numcard .big{
+  font-size:clamp(38px,5.6vw,76px);font-weight:600;
+  letter-spacing:-.05em;line-height:1;color:var(--green);
+  display:block;margin-bottom:.7rem;
+}
+.numcard .cap{font-size:15px;color:var(--txt-2);line-height:1.55}
+
+/* ═══════════════ SLIDE 3 — responsável ═══════════════ */
+.bio-grid{
+  display:grid;grid-template-columns:minmax(200px,300px) 1fr;
+  gap:clamp(32px,5vw,72px);align-items:center;
+}
+.bio-photo{
+  width:100%;aspect-ratio:1;border-radius:50%;
+  border:2px solid var(--green);
+  box-shadow:0 0 60px rgba(34,197,94,.22);
+  object-fit:cover;background:var(--shell);
+}
+.bio-photo--ph{
+  display:grid;place-items:center;text-align:center;
+  padding:2rem;border-style:dashed;border-color:var(--line-green);
+  box-shadow:none;
+}
+.bio-photo--ph span{font-family:var(--mono);font-size:10.5px;color:var(--txt-3);letter-spacing:.1em;line-height:1.7}
+.bio-name{font-size:clamp(22px,2.4vw,30px);margin-bottom:.35rem}
+.bio-role{
+  font-family:var(--mono);font-size:11px;text-transform:uppercase;
+  letter-spacing:.18em;color:var(--green);margin-bottom:1.6rem;
+}
+.bio-body p{font-size:15.5px;color:var(--txt-2);line-height:1.72;margin-bottom:1rem;max-width:60ch}
+.bio-body p:last-child{margin-bottom:0}
+
+/* ═══════════════ SLIDE 4 — prova social ═══════════════ */
+.logogrid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(12px,1.5vw,20px);
+}
+.logoslot{
+  aspect-ratio:16/7;border-radius:1rem;
+  border:1px dashed var(--line-2);
+  background:var(--glass);
+  display:grid;place-items:center;
+  filter:grayscale(1);opacity:.6;
+  transition:filter .3s,opacity .3s,border-color .3s;
+}
+.logoslot:hover{filter:grayscale(0);opacity:1;border-color:var(--line-green)}
+.logoslot span{font-family:var(--mono);font-size:10px;color:var(--txt-3);letter-spacing:.14em}
+
+/* ═══════════════ SLIDE 5 — diagnóstico ═══════════════ */
+.diag-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:2rem;flex-wrap:wrap;margin-bottom:clamp(24px,3vh,36px);
+}
+.diag-count{text-align:right;flex-shrink:0}
+.diag-count .n{
+  font-size:clamp(40px,5vw,64px);font-weight:600;letter-spacing:-.05em;
+  line-height:1;color:var(--green);display:block;
+  transition:color .3s;
+}
+.diag-count .n.dash{color:var(--txt-3)}
+.diag-count .l{
+  font-family:var(--mono);font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.18em;color:var(--txt-2);margin-top:.4rem;
+}
+.diag-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(10px,1.2vw,14px);
+  margin-bottom:clamp(24px,3vh,32px);
+}
+.sym{
+  display:flex;align-items:flex-start;gap:.9rem;
+  padding:1.1rem 1.25rem;
+  background:rgba(255,255,255,.022);
+  border:1px solid var(--line);
+  border-radius:1rem;
+  cursor:pointer;text-align:left;width:100%;
+  transition:border-color .3s,background .3s,opacity .45s,filter .45s;
+}
+.sym:hover{border-color:var(--line-2)}
+.sym .box{
+  flex-shrink:0;width:22px;height:22px;border-radius:7px;
+  border:1.5px solid var(--line-2);
+  display:grid;place-items:center;
+  transition:background .25s,border-color .25s;
+  margin-top:1px;
+}
+.sym .box svg{
+  width:12px;height:12px;color:#000;
+  opacity:0;transform:scale(.5);
+  transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1);
+}
+.sym .txt{font-size:14.5px;color:var(--txt-2);line-height:1.5;transition:color .3s}
+.sym[aria-pressed="true"]{border-color:var(--line-green);background:rgba(34,197,94,.05)}
+.sym[aria-pressed="true"] .box{background:var(--green);border-color:var(--green)}
+.sym[aria-pressed="true"] .box svg{opacity:1;transform:scale(1)}
+.sym[aria-pressed="true"] .txt{color:var(--txt)}
+.sym.void{
+  opacity:.25;filter:saturate(0);
+  pointer-events:none;
+}
+.sym.void .txt{text-decoration:line-through}
+.sym--none{grid-column:1/-1;border-style:dashed}
+.verdict{
+  padding:1.4rem 1.6rem;border-radius:1.25rem;
+  background:rgba(34,197,94,.06);
+  border:1px solid var(--line-green);
+  border-left:3px solid var(--green);
+  font-size:clamp(15px,1.7vw,19px);line-height:1.55;
+  color:var(--txt);font-weight:500;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .45s,transform .45s;
+  min-height:0;
+}
+.verdict.show{opacity:1;transform:none}
+.diag-print{display:none}
+
+/* ═══════════════ SLIDE 6 — custo ═══════════════ */
+.cost-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(14px,1.8vw,22px);
+  margin-bottom:clamp(32px,4vh,48px);
+}
+.cost-close{
+  text-align:center;font-size:clamp(19px,2.6vw,34px);
+  font-weight:500;letter-spacing:-.03em;line-height:1.25;
+  color:var(--green);max-width:24ch;margin:0 auto;
+}
+
+/* ═══════════════ SLIDE 7 — entrega ═══════════════ */
+.deliver-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(14px,1.6vw,20px);
+}
+
+/* ═══════════════ SLIDE 8 — método ═══════════════ */
+.method{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:clamp(12px,1.4vw,18px);position:relative;
+}
+.method::before{
+  content:"";position:absolute;
+  top:19px;left:6%;right:6%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green) 12%,var(--green) 88%,transparent);
+  opacity:.35;
+}
+.mstep{position:relative;padding-top:0}
+.mstep .dot{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--shell);border:1.5px solid var(--green);
+  display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:600;color:var(--green);
+  margin-bottom:1.1rem;position:relative;z-index:2;
+  box-shadow:0 0 24px rgba(34,197,94,.25);
+}
+.mstep h3{font-size:16.5px;margin-bottom:.5rem}
+.mstep p{font-size:13.5px;color:var(--txt-2);line-height:1.6}
+
+/* ═══════════════ SLIDE 9 — prazo ═══════════════ */
+.timeline{
+  position:relative;padding-left:2.5rem;
+  margin-bottom:clamp(24px,3vh,32px);
+}
+.timeline::before{
+  content:"";position:absolute;left:11px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(180deg,var(--green),rgba(34,197,94,.15));
+}
+.tl-item{position:relative;padding-bottom:1.9rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:"";position:absolute;left:-2.5rem;top:5px;
+  width:23px;height:23px;border-radius:50%;
+  background:var(--shell);border:1.5px solid var(--green);
+  box-shadow:0 0 20px rgba(34,197,94,.3);
+}
+.tl-day{
+  font-family:var(--mono);font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.18em;color:var(--green);margin-bottom:.35rem;
+}
+.tl-item p{font-size:16px;color:var(--txt);line-height:1.5}
+.callout{
+  padding:1.25rem 1.5rem;border-radius:1.25rem;
+  background:var(--glass);border:1px solid var(--line);
+  border-left:3px solid var(--green);
+  font-size:14.5px;color:var(--txt-2);line-height:1.65;
+}
+
+/* ═══════════════ SLIDE 10 — dia a dia ═══════════════ */
+.zig{display:grid;gap:clamp(10px,1.2vw,14px)}
+.zrow{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(10px,1.2vw,14px);
+}
+.zcard{
+  display:flex;gap:1.1rem;align-items:flex-start;
+  padding:1.35rem 1.5rem;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:1.25rem;
+  transition:border-color .3s,transform .3s;
+}
+.zcard:hover{border-color:var(--line-green);transform:translateY(-3px)}
+.znum{
+  flex-shrink:0;width:34px;height:34px;border-radius:50%;
+  background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);
+  display:grid;place-items:center;
+  font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--green);
+}
+.zcard h3{font-size:16px;margin-bottom:.4rem}
+.zcard p{font-size:13.5px;color:var(--txt-2);line-height:1.55}
+
+/* ═══════════════ SLIDE 11 — depoimentos ═══════════════ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px)}
+.testi{
+  padding:2rem;background:var(--card);
+  border:1px solid var(--line);border-radius:1.75rem;
+  display:flex;flex-direction:column;gap:1.1rem;
+  transition:border-color .3s,transform .3s;
+}
+.testi:hover{border-color:var(--line-green);transform:translateY(-4px)}
+.quote{font-family:var(--display);font-size:44px;line-height:.6;color:var(--green);font-weight:700}
+.testi blockquote{font-size:15px;line-height:1.6;color:var(--txt);flex:1}
+.testi .who{display:flex;align-items:center;gap:.85rem;margin-top:auto}
+.testi .av{
+  width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  background:rgba(34,197,94,.12);
+}
+.testi .nm{font-size:14.5px;font-weight:600;color:#fff;line-height:1.2}
+.testi .rl{font-family:var(--mono);font-size:11px;color:var(--txt-2);margin-top:2px;letter-spacing:.05em}
+.testi--ph{border-style:dashed;align-items:center;justify-content:center;text-align:center;min-height:220px}
+.testi--ph span{font-family:var(--mono);font-size:10.5px;color:var(--txt-3);letter-spacing:.1em;line-height:1.8}
+
+/* ═══════════════ SLIDE 12 — planos ═══════════════ */
+.plans{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.4vw,18px);align-items:start;
+  margin-bottom:clamp(18px,2.4vh,26px);
+}
+.plan{
+  padding:clamp(1.5rem,2.2vw,2rem);
+  background:var(--card);border:1px solid var(--line);
+  border-radius:1.75rem;
+  display:flex;flex-direction:column;gap:1.1rem;
+  transition:border-color .3s,transform .3s;
+}
+.plan:hover{border-color:var(--line-2)}
+.plan--hero{
+  border-color:var(--line-green);
+  background:linear-gradient(180deg,rgba(34,197,94,.07),rgba(255,255,255,.02));
+  box-shadow:0 0 60px rgba(34,197,94,.1);
+  transform:translateY(-14px);
+}
+.plan--hero:hover{border-color:var(--green)}
+.plan-name{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.plan-for{font-size:13px;color:var(--txt-2);line-height:1.55}
+.plan-price{padding:.35rem 0 .15rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:.5rem;padding-top:1rem;padding-bottom:1rem}
+.p-impl{display:flex;align-items:baseline;gap:.45rem;flex-wrap:wrap}
+.p-impl .x{font-size:13px;color:#fff;font-weight:500}
+.p-impl .v{font-size:clamp(26px,2.8vw,36px);font-weight:600;color:var(--green);letter-spacing:-.04em;line-height:1}
+.p-impl .cash{font-family:var(--mono);font-size:10.5px;color:var(--txt-2);letter-spacing:.03em}
+.p-mrr{font-size:13px;color:var(--txt-2)}
+.p-mrr b{color:var(--txt);font-weight:600}
+.plan-list{display:flex;flex-direction:column;gap:.7rem;flex:1}
+.plan-list li{display:flex;gap:.7rem;align-items:flex-start;font-size:13.4px;color:var(--txt-2);line-height:1.5}
+.plan-list li b{color:var(--txt);font-weight:600}
+.plan-inherit{
+  font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--green);
+  padding-bottom:.2rem;
+}
+.plan-strip{
+  padding:1.15rem 1.5rem;border-radius:1.25rem;
+  background:rgba(255,255,255,.028);border:1px solid var(--line);
+  text-align:center;font-size:14.5px;color:var(--txt-2);line-height:1.6;
+}
+.plan-strip b{color:var(--txt)}
+
+/* ═══════════════ SLIDE 13 — manutenção ═══════════════ */
+.maint-body{max-width:70ch;margin:0 auto clamp(24px,3vh,32px);text-align:center}
+.maint-body p{font-size:clamp(15px,1.6vw,17.5px);color:var(--txt-2);line-height:1.75;margin-bottom:1.1rem}
+.maint-body p:last-child{margin-bottom:0}
+.maint-body b{color:var(--txt);font-weight:600}
+.maint-box{
+  max-width:70ch;margin:0 auto;
+  padding:1.5rem 1.75rem;border-radius:1.25rem;
+  background:var(--glass);border:1px solid var(--line);
+  border-left:3px solid var(--green);
+}
+.maint-box h3{font-size:16.5px;margin-bottom:.75rem}
+.maint-box p{font-size:14.5px;color:var(--txt-2);line-height:1.7;margin-bottom:.8rem}
+.maint-box p:last-child{margin-bottom:0}
+
+/* ═══════════════ SLIDE 14 — pagamento ═══════════════ */
+.pay-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:start}
+.pay-list{display:flex;flex-direction:column;gap:.9rem}
+.pay-item{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:1.25rem 1.4rem;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:1.25rem;
+}
+.pay-item h3{font-size:15.5px;margin-bottom:.3rem}
+.pay-item p{font-size:13.5px;color:var(--txt-2);line-height:1.55}
+.warranty{
+  padding:clamp(1.75rem,3vw,2.5rem);
+  background:var(--card);border:1px solid var(--line-green);
+  border-radius:1.75rem;text-align:center;
+}
+.seal{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 1.4rem;
+  border:2px solid var(--green);
+  display:grid;place-items:center;align-content:center;
+  box-shadow:0 0 50px rgba(34,197,94,.25);
+  background:rgba(34,197,94,.06);
+}
+.seal .n{font-size:38px;font-weight:600;color:var(--green);letter-spacing:-.04em;line-height:1}
+.seal .u{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--green);margin-top:.2rem}
+.warranty p{font-size:14.5px;color:var(--txt-2);line-height:1.7}
+
+/* ═══════════════ SLIDE 15 — CTA ═══════════════ */
+.cta-panel{
+  padding:clamp(2rem,5vw,4.5rem);
+  border-radius:2.5rem;
+  background:
+    radial-gradient(circle at 20% 25%,rgba(74,222,128,.18),transparent 55%),
+    var(--green-deep);
+  text-align:center;position:relative;overflow:hidden;
+  border:1px solid rgba(74,222,128,.2);
+}
+.cta-panel::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right,rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse at center,#000 25%,transparent 72%);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 25%,transparent 72%);
+  pointer-events:none;
+}
+.cta-panel>*{position:relative;z-index:2}
+.cta-panel h2{
+  font-size:clamp(28px,4.4vw,58px);line-height:1.02;
+  letter-spacing:-.05em;margin-bottom:1.1rem;font-weight:500;
+  text-wrap:balance;
+}
+.cta-panel h2 em{color:#fff;font-style:italic}
+.cta-panel .lead{
+  color:rgba(255,255,255,.82);margin:0 auto clamp(24px,3.5vh,36px);
+  font-size:clamp(15px,1.6vw,18px);
+}
+.cta-panel .btn-primary{background:var(--green);color:#04150a;box-shadow:0 0 50px rgba(74,222,128,.4)}
+.cta-panel .btn-primary:hover{background:#fff;color:#04150a;box-shadow:0 0 70px rgba(255,255,255,.35)}
+.cta-fine{
+  margin-top:clamp(22px,3vh,30px);
+  font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;
+}
+.cta-fine b{color:#fff;font-weight:600}
+.cta-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1.5rem;flex-wrap:wrap;
+  margin-top:clamp(28px,4vh,44px);
+  padding-top:clamp(20px,2.5vh,28px);
+  border-top:1px solid var(--line);
+}
+.cta-foot .links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.cta-foot a{font-family:var(--mono);font-size:11px;color:var(--txt-2);letter-spacing:.08em;transition:color .2s}
+.cta-foot a:hover{color:var(--green)}
+
+/* ═══════════════ responsivo ═══════════════ */
+@media(max-width:1024px){
+  .method{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .method::before{display:none}
+  .cost-grid,.deliver-grid,.testi-grid{grid-template-columns:repeat(2,1fr)}
+  .logogrid{grid-template-columns:repeat(3,1fr)}
+  .plans{
+    grid-template-columns:repeat(3,minmax(260px,1fr));
+    overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:1rem;margin-left:calc(-1*clamp(24px,5vw,72px));
+    margin-right:calc(-1*clamp(24px,5vw,72px));
+    padding-left:clamp(24px,5vw,72px);padding-right:clamp(24px,5vw,72px);
+  }
+  .plan{scroll-snap-align:center}
+  .plan--hero{transform:none}
+}
+@media(max-width:768px){
+  .slide{min-height:auto;padding:clamp(56px,8vh,80px) 20px}
+  .bio-grid{grid-template-columns:1fr;gap:2rem}
+  .bio-photo{max-width:200px}
+  .numgrid,.diag-grid,.cost-grid,.deliver-grid,.testi-grid,.zrow,.pay-grid{grid-template-columns:1fr}
+  .logogrid{grid-template-columns:repeat(2,1fr)}
+  .method{grid-template-columns:1fr}
+  .diag-head{flex-direction:column;align-items:flex-start}
+  .diag-count{text-align:left}
+  .stats{gap:1.75rem}
+  .counter{display:none}
+  .cover h1{font-size:clamp(34px,9vw,52px)}
+}
+
+/* ═══════════════ impressão / PDF ═══════════════ */
+@media print{
+  @page{size:A4 landscape;margin:0}
+  html,body{background:#000 !important}
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+  .rv{opacity:1 !important;transform:none !important;transition:none !important}
+  .verdict{opacity:1 !important;transform:none !important}
+  .progress,.counter,.export,.navarrow{display:none !important}
+  .bg-layer,.glow{position:absolute !important}
+  .deck{display:block}
+  .slide{
+    page-break-after:always;break-after:page;
+    height:100vh;min-height:0;
+    padding:6vh 5vw;
+    display:flex;align-items:center;
+  }
+  .slide:last-child{page-break-after:auto;break-after:auto}
+  .card:hover,.numcard:hover,.zcard:hover,.testi:hover,.plan:hover{transform:none}
+  /* slide 5: troca interativo por estático */
+  .diag-live{display:none !important}
+  .diag-print{display:block !important}
+  /* slide 12: reduz 15% para caber em uma página */
+  .plans{font-size:85%;overflow:visible;grid-template-columns:repeat(3,1fr);margin:0;padding:0}
+  .plan--hero{transform:none}
+  .p-impl .v{font-size:26px}
+  .plan-list li{font-size:11.5px;gap:.5rem}
+  .ck{width:17px;height:17px}
+  .ck svg{width:9px;height:9px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div class="progress" id="progress"></div>
+
+<main class="deck" id="deck">
+
+  <!-- ═══════════ 01 · CAPA ═══════════ -->
+  <section class="slide cover" id="s1">
+    <div class="cover-top rv in">
+      <span class="logo">
+        <span class="logo-mark">&lt;/&gt;</span>
+        <span class="logo-text">Dev<span class="g">Start</span></span>
+      </span>
+    </div>
+    <div class="slide-inner">
+      <div class="eyebrow rv">Dev Start / Apresentação Comercial · Brasil</div>
+      <h1 class="rv d1">
+        Seu site deveria<br>
+        <em>trazer clientes</em>.<br>
+        O que ele faz hoje?
+      </h1>
+      <p class="lead rv d2">
+        Uma conversa de 25 minutos sobre o que o seu site está deixando de fazer —
+        e o que ele poderia fazer em 7 dias.
+      </p>
+      <div class="stats rv d3">
+        <div class="stat">
+          <div class="num">7 dias</div>
+          <div class="lbl">Entrega média</div>
+        </div>
+        <div class="stat">
+          <div class="num">+500</div>
+          <div class="lbl">Sites entregues</div>
+        </div>
+        <div class="stat">
+          <div class="num">R$97</div>
+          <div class="lbl">A partir de</div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-foot rv d4">
+      <span class="note">// devstartoficial.com.br</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 02 · QUEM SOMOS ═══════════ -->
+  <section class="slide slide--alt" id="s2">
+    <div class="slide-inner">
+      <div class="eyebrow rv">01 · Quem somos</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,44px)">
+        Experiência em <em>números</em>.
+      </h2>
+      <div class="numgrid">
+        <div class="numcard rv d1">
+          <span class="big">+500</span>
+          <div class="cap">sites entregues</div>
+        </div>
+        <div class="numcard rv d2">
+          <span class="big">Desde 2017</span>
+          <div class="cap">desenvolvendo e vendendo na internet</div>
+        </div>
+        <div class="numcard rv d3">
+          <span class="big">+9 anos</span>
+          <div class="cap">no mercado digital</div>
+        </div>
+        <div class="numcard rv d4">
+          <span class="big" style="font-size:clamp(28px,3.6vw,48px)">Sócio-fundador</span>
+          <div class="cap">do Grupo Kaizen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 03 · O RESPONSÁVEL ═══════════ -->
+  <section class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="eyebrow rv">02 · O responsável</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,48px)">
+        Quem vai cuidar do <em>seu projeto</em>.
+      </h2>
+      <div class="bio-grid">
+        <div class="rv d2">
+          <!-- PREENCHER: trocar por <img class="bio-photo" src="../assets/eduardo.jpg" alt="Eduardo — Fundador da Dev Start"> -->
+          <div class="bio-photo bio-photo--ph">
+            <span>[ PREENCHER ]<br>foto profissional<br>alta resolução</span>
+          </div>
+        </div>
+        <div class="rv d3">
+          <h3 class="bio-name">Eduardo</h3>
+          <div class="bio-role">Fundador da Dev Start</div>
+          <div class="bio-body">
+            <p>Trabalho com desenvolvimento web e marketing digital desde 2017. Foram mais de 500 sites entregues em quase uma década de mercado — de páginas institucionais simples a estruturas completas de conversão com rastreamento e integrações.</p>
+            <p>Como sócio-fundador do Grupo Kaizen, atuo na ponta onde o site encontra a venda: não basta ficar bonito, precisa gerar contato, orçamento e cliente.</p>
+            <p>Na Dev Start, cada projeto é tratado como canal de aquisição — não como cartão de visita digital.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 04 · PROVA SOCIAL ═══════════ -->
+  <section class="slide slide--alt" id="s4">
+    <div class="slide-inner">
+      <div class="eyebrow rv">03 · Prova social</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:1rem">
+        Marcas que já <em>confiaram</em> no meu trabalho.
+      </h2>
+      <p class="note rv d2" style="margin-bottom:clamp(28px,4vh,44px)">
+        // Slide sai do deck enquanto não houver logos com autorização de uso.
+      </p>
+      <div class="logogrid">
+        <div class="logoslot rv d2"><span>[ LOGO 01 ]</span></div>
+        <div class="logoslot rv d2"><span>[ LOGO 02 ]</span></div>
+        <div class="logoslot rv d3"><span>[ LOGO 03 ]</span></div>
+        <div class="logoslot rv d3"><span>[ LOGO 04 ]</span></div>
+        <div class="logoslot rv d4"><span>[ LOGO 05 ]</span></div>
+        <div class="logoslot rv d4"><span>[ LOGO 06 ]</span></div>
+        <div class="logoslot rv d5"><span>[ LOGO 07 ]</span></div>
+        <div class="logoslot rv d5"><span>[ LOGO 08 ]</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 05 · DIAGNÓSTICO ═══════════ -->
+  <section class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="eyebrow rv">04 · Diagnóstico</div>
+      <div class="diag-head">
+        <div class="rv d1">
+          <h2 style="font-size:clamp(30px,4.2vw,56px);margin-bottom:.7rem">
+            Vamos olhar para o <em>seu site</em> agora.
+          </h2>
+          <p class="lead" style="font-size:15.5px">Vamos marcar juntos o que acontece com o seu site hoje.</p>
+        </div>
+        <div class="diag-count rv d2 diag-live">
+          <span class="n" id="diagNum">0</span>
+          <div class="l" id="diagLbl">sintomas marcados</div>
+        </div>
+      </div>
+
+      <div class="diag-live">
+        <div class="diag-grid" id="diagGrid">
+          <button class="sym rv d2" type="button" aria-pressed="false" data-i="0">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Demora mais de 3 segundos para abrir</span>
+          </button>
+          <button class="sym rv d2" type="button" aria-pressed="false" data-i="1">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Fica desconfigurado ou difícil de usar no celular</span>
+          </button>
+          <button class="sym rv d3" type="button" aria-pressed="false" data-i="2">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Não tem botão de WhatsApp direto</span>
+          </button>
+          <button class="sym rv d3" type="button" aria-pressed="false" data-i="3">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Não aparece no Google quando alguém busca pelo meu serviço na minha cidade</span>
+          </button>
+          <button class="sym rv d4" type="button" aria-pressed="false" data-i="4">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Não sei quantas pessoas visitaram ou de onde elas vieram</span>
+          </button>
+          <button class="sym rv d4" type="button" aria-pressed="false" data-i="5">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Não tenho como atualizar sozinho — dependo de alguém</span>
+          </button>
+          <button class="sym rv d5" type="button" aria-pressed="false" data-i="6">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Foi feito há mais de 3 anos e nunca mais foi mexido</span>
+          </button>
+          <button class="sym sym--none rv d5" type="button" aria-pressed="false" data-i="7" data-none>
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span class="txt">Simplesmente não tenho site</span>
+          </button>
+        </div>
+        <div class="verdict" id="verdict" role="status" aria-live="polite"></div>
+      </div>
+
+      <!-- versão estática para PDF -->
+      <div class="diag-print">
+        <h3 style="font-size:20px;margin-bottom:1.25rem">Os 8 sintomas de um site que não vende</h3>
+        <div class="diag-grid">
+          <div class="sym"><span class="box"></span><span class="txt">Demora mais de 3 segundos para abrir</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Fica desconfigurado ou difícil de usar no celular</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Não tem botão de WhatsApp direto</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Não aparece no Google quando alguém busca pelo meu serviço na minha cidade</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Não sei quantas pessoas visitaram ou de onde elas vieram</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Não tenho como atualizar sozinho — dependo de alguém</span></div>
+          <div class="sym"><span class="box"></span><span class="txt">Foi feito há mais de 3 anos e nunca mais foi mexido</span></div>
+          <div class="sym sym--none"><span class="box"></span><span class="txt">Simplesmente não tenho site</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 06 · O CUSTO ═══════════ -->
+  <section class="slide slide--alt" id="s6">
+    <div class="slide-inner">
+      <div class="eyebrow rv">05 · O custo</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,44px)">
+        O que um site parado <em>custa</em>.
+      </h2>
+      <div class="cost-grid">
+        <div class="card rv d1">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <h3>O cliente não espera</h3>
+          <p>Quem entra num site que demora desiste antes de ver o que você vende. Ele volta pro Google e clica no concorrente logo abaixo.</p>
+        </div>
+        <div class="card rv d2">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </div>
+          <h3>Quem não aparece, não existe</h3>
+          <p>Seu cliente busca no Google antes de comprar. Se você não está lá, ele encontra outro que está.</p>
+        </div>
+        <div class="card rv d3">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          </div>
+          <h3>Sem dado, sem decisão</h3>
+          <p>Sem rastreamento, você não sabe o que funciona. Investe no escuro e chama de sorte quando dá certo.</p>
+        </div>
+      </div>
+      <p class="cost-close rv d4">
+        Não é sobre ter um site. É sobre saber gerar desejo pelo que você vende.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ 07 · ENTREGA ═══════════ -->
+  <section class="slide" id="s7">
+    <div class="slide-inner">
+      <div class="eyebrow rv">06 · Entrega</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,44px)">
+        O que você <em>recebe</em>.
+      </h2>
+      <div class="deliver-grid">
+        <div class="card rv d1">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/><path d="M3 9h18M8 3v3"/></svg>
+          </div>
+          <h3>Site sob medida</h3>
+          <p>Estrutura pensada para o seu negócio, não template genérico.</p>
+        </div>
+        <div class="card rv d2">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+          </div>
+          <h3>Performance</h3>
+          <p>Carregamento rápido, otimizado para nota alta no PageSpeed.</p>
+        </div>
+        <div class="card rv d3">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg>
+          </div>
+          <h3>Mobile-first</h3>
+          <p>Construído a partir do celular, onde está a maioria do seu público.</p>
+        </div>
+        <div class="card rv d4">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/></svg>
+          </div>
+          <h3>SEO técnico</h3>
+          <p>Estrutura preparada para o Google encontrar e entender seu site.</p>
+        </div>
+        <div class="card rv d5">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5"/></svg>
+          </div>
+          <h3>Conversão</h3>
+          <p>WhatsApp, formulários e chamadas posicionados onde geram contato.</p>
+        </div>
+        <div class="card rv d6">
+          <div class="card-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6.5v5c0 4.6 3.2 8.6 8 9.5 4.8-.9 8-4.9 8-9.5v-5z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3>Hospedagem e suporte</h3>
+          <p>O site no ar, seguro e atualizado, com alterações mensais inclusas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 08 · O MÉTODO ═══════════ -->
+  <section class="slide slide--alt" id="s8">
+    <div class="slide-inner">
+      <div class="eyebrow rv">07 · O método</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:.8rem">
+        Como <em>será feito</em>.
+      </h2>
+      <p class="lead rv d1" style="margin-bottom:clamp(32px,4.5vh,52px)">Do fechamento ao site no ar.</p>
+      <div class="method">
+        <div class="mstep rv d1">
+          <div class="dot">01</div>
+          <h3>Briefing</h3>
+          <p>Formulário estruturado + conversa. Entendo o que você vende, para quem, e qual ação o visitante precisa tomar.</p>
+        </div>
+        <div class="mstep rv d2">
+          <div class="dot">02</div>
+          <h3>Estrutura</h3>
+          <p>Definição das seções, hierarquia da informação e caminho até o contato.</p>
+        </div>
+        <div class="mstep rv d3">
+          <div class="dot">03</div>
+          <h3>Produção</h3>
+          <p>Desenvolvimento, textos, imagens e ajustes de performance. Primeira versão navegável no meio do prazo.</p>
+        </div>
+        <div class="mstep rv d4">
+          <div class="dot">04</div>
+          <h3>Publicação</h3>
+          <p>Domínio, certificado de segurança, e-mail profissional, Google Search Console e Analytics configurados.</p>
+        </div>
+        <div class="mstep rv d5">
+          <div class="dot">05</div>
+          <h3>Suporte contínuo</h3>
+          <p>Site no ar, monitorado, com solicitações de alteração incluídas todo mês. Você lista o que precisa, eu executo dentro do prazo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 09 · PRAZO ═══════════ -->
+  <section class="slide" id="s9">
+    <div class="slide-inner">
+      <div class="eyebrow rv">08 · Prazo</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:.8rem">
+        Seu site no ar em <em>7 dias úteis</em>.
+      </h2>
+      <p class="lead rv d1" style="margin-bottom:clamp(32px,4.5vh,48px)">Do briefing completo à publicação.</p>
+      <div class="timeline">
+        <div class="tl-item rv d1">
+          <div class="tl-day">Dia 1</div>
+          <p>Estrutura e arquitetura definidas</p>
+        </div>
+        <div class="tl-item rv d2">
+          <div class="tl-day">Dia 3</div>
+          <p>Primeira versão navegável enviada para você</p>
+        </div>
+        <div class="tl-item rv d3">
+          <div class="tl-day">Dia 5</div>
+          <p>Rodada de ajustes aplicada</p>
+        </div>
+        <div class="tl-item rv d4">
+          <div class="tl-day">Dia 7</div>
+          <p>Site publicado e no ar</p>
+        </div>
+      </div>
+      <div class="callout rv d5">
+        A contagem começa quando eu recebo o briefing completo e os materiais (logo, fotos, textos).
+        Ajustes concentrados em uma rodada, com 48h para você reunir tudo o que quer alterar.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 10 · O DIA A DIA ═══════════ -->
+  <section class="slide slide--alt" id="s10">
+    <div class="slide-inner">
+      <div class="eyebrow rv">09 · O dia a dia</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,44px)">
+        Depois que <em>você fecha</em>.
+      </h2>
+      <div class="zig">
+        <div class="zrow">
+          <div class="zcard rv d1">
+            <div class="znum">01</div>
+            <div>
+              <h3>Contrato e pagamento</h3>
+              <p>Contrato digital assinado pelas duas partes.</p>
+            </div>
+          </div>
+          <div class="zcard rv d2">
+            <div class="znum">02</div>
+            <div>
+              <h3>Grupo no WhatsApp</h3>
+              <p>Canal direto comigo. Sem ticket, sem intermediário, sem espera.</p>
+            </div>
+          </div>
+        </div>
+        <div class="zrow">
+          <div class="zcard rv d3">
+            <div class="znum">03</div>
+            <div>
+              <h3>Briefing</h3>
+              <p>Você recebe o formulário e a lista de materiais. É aqui que o projeto realmente começa.</p>
+            </div>
+          </div>
+          <div class="zcard rv d4">
+            <div class="znum">04</div>
+            <div>
+              <h3>Produção</h3>
+              <p>7 dias úteis. Você acompanha e recebe a versão navegável no meio do caminho.</p>
+            </div>
+          </div>
+        </div>
+        <div class="zrow">
+          <div class="zcard rv d5">
+            <div class="znum">05</div>
+            <div>
+              <h3>Publicação</h3>
+              <p>Site no ar, domínio configurado, tudo funcionando.</p>
+            </div>
+          </div>
+          <div class="zcard rv d6">
+            <div class="znum">06</div>
+            <div>
+              <h3>Entrega e rotina</h3>
+              <p>Vídeo de 5 minutos mostrando seu site e como abrir uma solicitação de alteração. A partir daí, suporte mensal ativo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 11 · DEPOIMENTOS ═══════════ -->
+  <section class="slide" id="s11">
+    <div class="slide-inner">
+      <div class="eyebrow rv">10 · Depoimentos</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:1rem">
+        O que nossos clientes <em>dizem</em>.
+      </h2>
+      <p class="note rv d1" style="margin-bottom:clamp(28px,4vh,44px)">
+        // Substituir pelos depoimentos reais — print de WhatsApp serve, exibido dentro de mock de celular.
+      </p>
+      <div class="testi-grid">
+        <div class="testi rv d2">
+          <div class="quote">"</div>
+          <blockquote>Achei que ia ser complicado, mas em menos de uma semana meu site estava no ar. Profissional demais.</blockquote>
+          <div class="who">
+            <img class="av" src="../assets/depoimento-joao.png" alt="João R." loading="lazy">
+            <div>
+              <div class="nm">João R.</div>
+              <div class="rl">Restaurante</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi rv d3">
+          <div class="quote">"</div>
+          <blockquote>Já tinham o visual pronto quando me chamaram. Fechei na hora. Superou minhas expectativas.</blockquote>
+          <div class="who">
+            <img class="av" src="../assets/depoimento-carla.png" alt="Carla M." loading="lazy">
+            <div>
+              <div class="nm">Carla M.</div>
+              <div class="rl">Clínica Estética</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi rv d4">
+          <div class="quote">"</div>
+          <blockquote>Finalmente um site que parece com a minha empresa. O suporte é rápido e resolvem tudo.</blockquote>
+          <div class="who">
+            <img class="av" src="../assets/depoimento-marcos.png" alt="Marcos T." loading="lazy">
+            <div>
+              <div class="nm">Marcos T.</div>
+              <div class="rl">Escritório Contábil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 12 · INVESTIMENTO ═══════════ -->
+  <section class="slide slide--alt" id="s12">
+    <div class="slide-inner">
+      <div class="eyebrow rv">11 · Investimento</div>
+      <h2 class="rv d1" style="font-size:clamp(30px,4.2vw,56px);margin-bottom:clamp(24px,3.5vh,40px)">
+        Escolha <em>o seu plano</em>.
+      </h2>
+      <div class="plans">
+
+        <!-- ESSENCIAL -->
+        <div class="plan rv d1">
+          <div>
+            <div class="plan-name">Essencial</div>
+            <p class="plan-for" style="margin-top:.45rem">Para quem precisa existir na internet com credibilidade.</p>
+          </div>
+          <div class="plan-price">
+            <div class="p-impl">
+              <span class="x">12×</span>
+              <span class="v">R$41,42</span>
+              <span class="cash">ou R$497 à vista</span>
+            </div>
+            <div class="p-mrr">+ <b>R$97/mês</b> de hospedagem e suporte</div>
+          </div>
+          <ul class="plan-list">
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Site institucional de até 4 seções</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Design responsivo (celular, tablet, desktop)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Botão de WhatsApp</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Otimização de velocidade</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> SSL (site seguro)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Publicação e configuração de domínio</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>1 solicitação de alteração por mês</b> (até 3 itens por solicitação)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Prazo de execução: 7 dias úteis</b></li>
+          </ul>
+        </div>
+
+        <!-- CONVERSÃO -->
+        <div class="plan plan--hero rv d2">
+          <div>
+            <div class="badge" style="margin-bottom:.9rem">Mais escolhido</div>
+            <div class="plan-name">Conversão</div>
+            <p class="plan-for" style="margin-top:.45rem">Para quem quer que o site traga orçamento, não só visita.</p>
+          </div>
+          <div class="plan-price">
+            <div class="p-impl">
+              <span class="x">12×</span>
+              <span class="v">R$83,08</span>
+              <span class="cash">ou R$997 à vista</span>
+            </div>
+            <div class="p-mrr">+ <b>R$147/mês</b> de hospedagem e suporte</div>
+          </div>
+          <div class="plan-inherit">Tudo do Essencial, mais:</div>
+          <ul class="plan-list">
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Site de até 8 seções, estruturado para conversão</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Copy orientada a venda (eu escrevo os textos)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Múltiplos pontos de conversão distribuídos na página</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> SEO técnico completo</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Google Analytics + Search Console configurados</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Galeria ou portfólio</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Seção de depoimentos</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>3 solicitações de alteração por mês</b> (até 5 itens por solicitação)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Prazo de execução: 7 dias úteis</b></li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Bônus: 3 meses de hospedagem e suporte por nossa conta</b></li>
+          </ul>
+        </div>
+
+        <!-- PERFORMANCE -->
+        <div class="plan rv d3">
+          <div>
+            <div class="plan-name">Performance</div>
+            <p class="plan-for" style="margin-top:.45rem">Para quem já investe em tráfego ou vai começar.</p>
+          </div>
+          <div class="plan-price">
+            <div class="p-impl">
+              <span class="x">12×</span>
+              <span class="v">R$166,42</span>
+              <span class="cash">ou R$1.997 à vista</span>
+            </div>
+            <div class="p-mrr">+ <b>R$197/mês</b> de hospedagem e suporte</div>
+          </div>
+          <div class="plan-inherit">Tudo do Conversão, mais:</div>
+          <ul class="plan-list">
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Site completo, sem limite de seções</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Integração de formulários com seu e-mail ou CRM</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Rastreamento completo: Google Ads, Meta Pixel, eventos de conversão</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Páginas de captura adicionais</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Blog estruturado para SEO</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> Otimização avançada de performance</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>5 solicitações de alteração por mês</b> (até 10 itens por solicitação)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Prazo de execução: 4 dias úteis — atendimento prioritário</b></li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Bônus: 3 meses de hospedagem e suporte por nossa conta</b></li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Bônus: domínio .com.br por 1 ano</b> (até R$80)</li>
+            <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span> <b>Bônus: Otimização estratégica do Google Meu Negócio</b></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="plan-strip rv d4">
+        <b>Sem fidelidade.</b> Se um dia quiser encerrar a manutenção, configuro seu site na hospedagem que você escolher e ele passa a ser 100% seu.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 13 · MANUTENÇÃO ═══════════ -->
+  <section class="slide" id="s13">
+    <div class="slide-inner">
+      <div class="eyebrow rv">12 · Manutenção</div>
+      <h2 class="rv d1" style="font-size:clamp(30px,4.4vw,58px);margin-bottom:clamp(28px,4vh,44px);text-align:center;max-width:20ch;margin-left:auto;margin-right:auto">
+        O site não acaba no <em>dia da entrega</em>.
+      </h2>
+      <div class="maint-body rv d2">
+        <p>Site é estrutura viva. Precisa de servidor no ar, certificado de segurança renovado, backup, atualização e alguém que resolva quando algo quebra — às 22h de um sábado.</p>
+        <p>A manutenção mensal cobre tudo isso, mais suas <b>solicitações de alteração</b>. Trocar um preço, subir uma foto nova, ajustar um texto, publicar uma promoção.</p>
+        <p><b>Sem fidelidade e sem pegadinha.</b> Se quiser encerrar, eu configuro o site na sua própria hospedagem e ele passa a ser 100% seu.</p>
+      </div>
+      <div class="maint-box rv d3">
+        <h3>Como funciona uma solicitação</h3>
+        <p>Uma solicitação é uma lista. Você junta tudo o que precisa alterar e me manda de uma vez — não item por item, dia após dia.</p>
+        <p>Isso existe por um motivo simples: alteração agrupada é executada com contexto e testada por inteiro. Alteração picotada é retrabalho, e retrabalho atrasa o seu site.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 14 · PAGAMENTO E GARANTIA ═══════════ -->
+  <section class="slide slide--alt" id="s14">
+    <div class="slide-inner">
+      <div class="eyebrow rv">13 · Pagamento e garantia</div>
+      <h2 class="rv d1" style="font-size:clamp(32px,4.6vw,62px);margin-bottom:clamp(28px,4vh,44px)">
+        Como funciona o <em>pagamento</em>.
+      </h2>
+      <div class="pay-grid">
+        <div>
+          <div class="eyebrow rv d1" style="margin-bottom:1.1rem">Formas de pagamento</div>
+          <div class="pay-list">
+            <div class="pay-item rv d2">
+              <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+              <div>
+                <h3>Pix</h3>
+                <p>50% após o briefing aprovado, 50% na publicação do site.</p>
+              </div>
+            </div>
+            <div class="pay-item rv d3">
+              <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+              <div>
+                <h3>Cartão</h3>
+                <p>Até 12x, pagamento após aprovação do briefing.</p>
+              </div>
+            </div>
+            <div class="pay-item rv d4">
+              <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>
+              <div>
+                <h3>Boleto</h3>
+                <p>Pagamento após aprovação do briefing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="eyebrow rv d2" style="margin-bottom:1.1rem">Garantia</div>
+          <div class="warranty rv d3">
+            <div class="seal">
+              <div class="n">7</div>
+              <div class="u">dias</div>
+            </div>
+            <p>Se depois de fechar você desistir do projeto em até 7 dias, devolvo o valor pago integralmente. Sem burocracia e sem pergunta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 15 · PRÓXIMO PASSO ═══════════ -->
+  <section class="slide" id="s15">
+    <div class="slide-inner">
+      <div class="eyebrow rv">14 · Próximo passo</div>
+      <div class="cta-panel rv d1">
+        <h2>Pronto pra ter um site que <em>trabalha por você</em>?</h2>
+        <p class="lead">Escolha o plano, e em 7 dias úteis seu site está no ar.</p>
+        <a class="btn btn-primary btn-lg" href="https://wa.me/5500000000000" target="_blank" rel="noopener" id="waLink">
+          Falar no WhatsApp
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <div class="cta-fine">
+          <span id="validity"><b>Condição válida até —.</b></span><br>
+          Indicou e o cliente fechou? 15% de desconto no seu próximo projeto.
+        </div>
+      </div>
+      <div class="cta-foot rv d2">
+        <span class="logo">
+          <span class="logo-mark">&lt;/&gt;</span>
+          <span class="logo-text">Dev<span class="g">Start</span></span>
+        </span>
+        <div class="links">
+          <a href="https://www.devstartoficial.com.br" target="_blank" rel="noopener">devstartoficial.com.br</a>
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════ HUD ═══════════ -->
+<button class="export" id="exportBtn" type="button">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
+  Salvar em PDF
+</button>
+<button class="navarrow up" id="prevBtn" type="button" aria-label="Slide anterior">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+</button>
+<button class="navarrow down" id="nextBtn" type="button" aria-label="Próximo slide">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+</button>
+<div class="counter">
+  <span class="cur" id="curNum">01</span>
+  <span>/</span>
+  <span id="totNum">15</span>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var progress = document.getElementById('progress');
+  var curNum = document.getElementById('curNum');
+  var totNum = document.getElementById('totNum');
+
+  totNum.textContent = pad(slides.length);
+
+  function pad(n){ return n < 10 ? '0' + n : String(n); }
+
+  /* ── reveal on scroll ── */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.add('in');
+    });
+  }, { threshold:.12, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  /* ── progresso + contador ── */
+  function onScroll(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    progress.style.width = pct + '%';
+
+    var mid = window.scrollY + window.innerHeight * .45;
+    var idx = 0;
+    for(var i = 0; i < slides.length; i++){
+      if(slides[i].offsetTop <= mid) idx = i;
+    }
+    curNum.textContent = pad(idx + 1);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ── navegação por slide ── */
+  function currentIndex(){
+    var mid = window.scrollY + window.innerHeight * .45;
+    var idx = 0;
+    for(var i = 0; i < slides.length; i++){
+      if(slides[i].offsetTop <= mid) idx = i;
+    }
+    return idx;
+  }
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > slides.length - 1) i = slides.length - 1;
+    window.scrollTo({ top: slides[i].offsetTop, behavior:'smooth' });
+  }
+  document.getElementById('prevBtn').addEventListener('click', function(){ goTo(currentIndex() - 1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ goTo(currentIndex() + 1); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if(t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+    if(e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown'){
+      e.preventDefault(); goTo(currentIndex() + 1);
+    } else if(e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp'){
+      e.preventDefault(); goTo(currentIndex() - 1);
+    } else if(e.key === 'Home'){
+      e.preventDefault(); goTo(0);
+    } else if(e.key === 'End'){
+      e.preventDefault(); goTo(slides.length - 1);
+    }
+  });
+
+  /* ── swipe no mobile ── */
+  var touchY = null, touchX = null;
+  document.addEventListener('touchstart', function(e){
+    touchY = e.touches[0].clientY;
+    touchX = e.touches[0].clientX;
+  }, { passive:true });
+  document.addEventListener('touchend', function(e){
+    if(touchY === null) return;
+    var dy = touchY - e.changedTouches[0].clientY;
+    var dx = touchX - e.changedTouches[0].clientX;
+    if(Math.abs(dy) > 70 && Math.abs(dy) > Math.abs(dx)){
+      goTo(currentIndex() + (dy > 0 ? 1 : -1));
+    }
+    touchY = null; touchX = null;
+  }, { passive:true });
+
+  /* ── SLIDE 5 · diagnóstico ── */
+  var syms = Array.prototype.slice.call(document.querySelectorAll('#diagGrid .sym'));
+  var noneBtn = document.querySelector('#diagGrid [data-none]');
+  var others = syms.filter(function(s){ return s !== noneBtn; });
+  var diagNum = document.getElementById('diagNum');
+  var diagLbl = document.getElementById('diagLbl');
+  var verdict = document.getElementById('verdict');
+  var memory = [];
+
+  function marked(){
+    return others.filter(function(s){ return s.getAttribute('aria-pressed') === 'true'; }).length;
+  }
+
+  function verdictFor(n, noneOn){
+    if(noneOn) return 'Enquanto você não tem site, seu concorrente tem. E é o dele que o Google mostra quando o seu cliente procura.';
+    if(n === 0) return '';
+    if(n <= 2) return 'Seu site é razoável. Mas se você chegou até esta reunião, é porque ele não está trazendo o resultado que você esperava.';
+    if(n <= 5) return 'Seu site está te custando cliente todo mês. Você só não vê a conta chegando.';
+    return 'Você está pagando (em tempo e oportunidade) por um site que trabalha contra você.';
+  }
+
+  function render(){
+    var noneOn = noneBtn.getAttribute('aria-pressed') === 'true';
+    var n = marked();
+
+    if(noneOn){
+      diagNum.textContent = '—';
+      diagNum.classList.add('dash');
+      diagLbl.textContent = 'sem site hoje';
+    } else {
+      diagNum.textContent = String(n);
+      diagNum.classList.remove('dash');
+      diagLbl.textContent = n === 1 ? 'sintoma marcado' : 'sintomas marcados';
+    }
+
+    var txt = verdictFor(n, noneOn);
+    if(txt){
+      verdict.textContent = txt;
+      verdict.classList.add('show');
+    } else {
+      verdict.classList.remove('show');
+      window.setTimeout(function(){
+        if(!verdict.classList.contains('show')) verdict.textContent = '';
+      }, 450);
+    }
+  }
+
+  function cascadeVoid(on){
+    others.forEach(function(s, i){
+      window.setTimeout(function(){
+        if(on){
+          s.classList.add('void');
+          s.setAttribute('aria-pressed','false');
+          s.setAttribute('aria-disabled','true');
+        } else {
+          s.classList.remove('void');
+          s.removeAttribute('aria-disabled');
+          if(memory[i]) s.setAttribute('aria-pressed','true');
+        }
+        if(i === others.length - 1) render();
+      }, i * 60);
+    });
+  }
+
+  syms.forEach(function(s){
+    s.addEventListener('click', function(){
+      var on = s.getAttribute('aria-pressed') === 'true';
+
+      if(s === noneBtn){
+        if(!on){
+          memory = others.map(function(o){ return o.getAttribute('aria-pressed') === 'true'; });
+          s.setAttribute('aria-pressed','true');
+          cascadeVoid(true);
+        } else {
+          s.setAttribute('aria-pressed','false');
+          cascadeVoid(false);
+        }
+        render();
+        return;
+      }
+
+      if(s.classList.contains('void')) return;
+      s.setAttribute('aria-pressed', on ? 'false' : 'true');
+      render();
+    });
+  });
+
+  render();
+
+  /* ── SLIDE 15 · validade congelada em localStorage ── */
+  var KEY = 'devstart_apresentacao_inicio';
+  var DIAS = 3;
+  var MS_DIA = 86400000;
+  var el = document.getElementById('validity');
+  var meses = ['janeiro','fevereiro','março','abril','maio','junho',
+               'julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  function lerInicio(){
+    try{
+      var v = window.localStorage.getItem(KEY);
+      if(v){
+        var t = parseInt(v, 10);
+        if(!isNaN(t)) return t;
+      }
+      var agora = Date.now();
+      window.localStorage.setItem(KEY, String(agora));
+      return agora;
+    }catch(err){
+      return Date.now();
+    }
+  }
+
+  var inicio = lerInicio();
+  var limite = inicio + DIAS * MS_DIA;
+
+  if(Date.now() > limite){
+    el.innerHTML = '<b>Condição sujeita a reavaliação — fale comigo.</b>';
+  } else {
+    var d = new Date(limite);
+    el.innerHTML = '<b>Condição válida até ' + d.getDate() + ' de ' +
+                   meses[d.getMonth()] + ' de ' + d.getFullYear() + '.</b>';
+  }
+
+  /* ── export PDF ── */
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    document.querySelectorAll('.rv').forEach(function(x){ x.classList.add('in'); });
+    window.setTimeout(function(){ window.print(); }, 60);
+  });
+
+})();
+</script>
+
+</body>
+</html>
